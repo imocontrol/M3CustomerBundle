@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "imocontrol/m3-admin-bundle": "dev-master",
+        "imocontrol/m3-admin-bundle": "dev-master"
     },
     "require-dev": {
         
