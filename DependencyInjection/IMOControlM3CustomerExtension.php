@@ -26,9 +26,28 @@ class IMOControlM3CustomerExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('admin_services.yml');
         
+        $this->initApplicationConfig($config, $container);
         $this->registerDoctrineMappings($config);
     }
     
+    protected function initApplicationConfig($config, $container) 
+	{
+		$container->setParameter('imocontrol.customer.admin.class', $config['admin']['customer']['class']);
+		$container->setParameter('imocontrol.customer.admin.entity.class', $config['admin']['customer']['entity']);
+		$container->setParameter('imocontrol.customer.admin.controller.class', $config['admin']['customer']['controller']);
+		$container->setParameter('imocontrol.customer.admin.translation', $config['admin']['customer']['translation']);
+		
+		$container->setParameter('imocontrol.customer_address.admin.class', $config['admin']['customer_address']['class']);
+		$container->setParameter('imocontrol.customer_address.admin.entity.class', $config['admin']['customer_address']['entity']);
+		$container->setParameter('imocontrol.customer_address.admin.controller.class', $config['admin']['customer_address']['controller']);
+		$container->setParameter('imocontrol.customer_address.admin.translation', $config['admin']['customer_address']['translation']);
+		
+		$container->setParameter('imocontrol.contact.admin.class', $config['admin']['contact']['class']);
+		$container->setParameter('imocontrol.contact.admin.entity.class', $config['admin']['contact']['entity']);
+		$container->setParameter('imocontrol.contact.admin.controller.class', $config['admin']['contact']['controller']);
+		$container->setParameter('imocontrol.contact.admin.translation', $config['admin']['contact']['translation']);
+		
+	}
     
     protected function registerDoctrineMappings($config)
 	{

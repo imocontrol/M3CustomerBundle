@@ -1,13 +1,4 @@
-parameters:
-    imocontrol.customer.admin.class: IMOControl\M3\CustomerBundle\Admin\CustomerAdmin
-    imocontrol.customer.admin.entity.class: IMOControl\M3\CustomerBundle\Entity\Customer
-    imocontrol.customer.admin.controller.class: IMOControlM3CustomerBundle:Default
-    imocontrol.customer.admin.default_controller.class: IMOControlM3CustomerBundle:Default
-    imocontrol.customer_address.admin.class: IMOControl\M3\CustomerBundle\Admin\CustomerAddressAdmin
-    imocontrol.customer_address.admin.entity.class: IMOControl\M3\CustomerBundle\Entity\CustomerAddress
-    imocontrol.contact.admin.class: IMOControl\M3\CustomerBundle\Admin\ContactAdmin
-    imocontrol.contact.admin.entity.class: IMOControl\M3\CustomerBundle\Entity\Contact
-    
+   
 services:
     imocontrol.customer:
       class: %imocontrol.customer.admin.class%
@@ -21,7 +12,7 @@ services:
       class: %imocontrol.customer_address.admin.class%
       tags:
         - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_address_title, persist_filters: true }
-      arguments: [null, %imocontrol.customer_address.admin.entity.class%, %imocontrol.customer.admin.default_controller.class%]
+      arguments: [null, %imocontrol.customer_address.admin.entity.class%, %imocontrol.customer.admin.controller.class%]
       calls:
         - [setSecurityContext, [@security.context]]
         
@@ -29,6 +20,6 @@ services:
       class: %imocontrol.contact.admin.class%
       tags:
         - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_contact_title, persist_filters: true }
-      arguments: [null, %imocontrol.contact.admin.entity.class%, %imocontrol.customer.admin.default_controller.class%]
+      arguments: [null, %imocontrol.contact.admin.entity.class%, %imocontrol.customer.admin.controller.class%]
       calls:
         - [setSecurityContext, [@security.context]]
