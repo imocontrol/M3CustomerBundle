@@ -1,0 +1,37 @@
+{
+    "name": "imocontrol/m3-customer-bundle",
+    "type": "symfony-bundle",
+    "description": "Core bundle of the iMOControl which implements a simple customer model and some default workflows.",
+    "keywords": ["m3 customer bundle", "imocontrol", "corebundle", "m3byte", "sonata admin extension"],
+    "homepage": "http://www.imocontrol.net",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Ofner",
+            "email": "michael@m3byte.com",
+            "homepage": "http://imocontrol.net"
+        },
+        {
+            "name": "M3Byte Opensource Lab",
+            "homepage": "https://github.com/imocontrol/M3CustomerBundle/contributors"
+        }
+    ],
+    "require": {
+        "imocontrol/m3-admin-bundle": "dev-master",
+    },
+    "require-dev": {
+        
+    },
+    "suggest": {
+        
+    },
+    "autoload": {
+        "psr-0": { "IMOControl\\M3\\CustomerBundle\\": "" }
+    },
+    "target-dir": "IMOControl/M3/CustomerBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

@@ -1,0 +1,5 @@
+Application\IMOControl\M3\CustomerBundle\Entity\CustomerAddress:
+  type: entity
+  table: imocapp___customer_addresses
+  fields:
+    
