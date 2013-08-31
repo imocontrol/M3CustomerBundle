@@ -2,11 +2,16 @@
 namespace IMOControl\M3\CustomerBundle\Model\Interfaces;
 
 use Doctrine\Common\Collections\Collection;
-use IMOControl\M3\CustomerBundle\Model\Interfaces\ContactInterface;
-use IMOControl\M3\CustomerBundle\Model\CustomerAddress;
 
 interface CustomerInterface
 {
+    /**
+	 * Return the customer as string.
+	 * Required function to use in admin classes.
+	 * @return string
+	 */
+	public function __toString();
+	
     /**
      * Get salutation for the customer. Check if company or not!
 	 * Also used for invoice address. To get delivery address see getDeliverySalutation
@@ -24,92 +29,7 @@ interface CustomerInterface
 	public function getPhoneNumbers();
 	
 	public function getContactsCount();
-	
     
-    /**
-     * Set academic_title
-     *
-     * @param string $academicTitle
-     */
-    public function setAcademicTitle($academicTitle);
-
-    /**
-     * Get academic_title
-     *
-     * @return string 
-     */
-    public function getAcademicTitle();
-
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
-
-    /**
-     * Get firstname
-     *
-     * @return string 
-     */
-    public function getFirstname();
-
-    /**
-     * Set lastname
-     *
-     * @param string $lastname
-     */
-    public function setLastname($lastname);
-
-    /**
-     * Get lastname
-     *
-     * @return string 
-     */
-    public function getLastname();
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     */
-    public function setEmail($email);
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail();
-
-    /**
-     * Set birthday
-     *
-     * @param date $birthday
-     */
-    public function setBirthday($birthday);
-
-    /**
-     * Get birthday
-     *
-     * @return date 
-     */
-    public function getBirthday();
-
-    /**
-     * Set gender
-     *
-     * @param string $gender
-     */
-    public function setGender($gender);
-
-    /**
-     * Get gender
-     *
-     * @return string 
-     */
-    public function getGender();
-
     /**
      * Set uid_number
      *
@@ -160,25 +80,25 @@ interface CustomerInterface
 	public function isCompany();
 	
     /**
-     * Set Company
+     * Set name of the customer or company name
      *
-     * @param Company $value
+     * @param string $value
      */
-    public function setCompanyName($value);
+    public function setName($value);
 
     /**
-     * Get Company
+     * Get name of the customer or company name
      *
-     * @return Company 
+     * @return string 
      */
-    public function getCompanyName();
+    public function getName();
     
 	/**
      * Set the main office (headquater) address of the customer. Mostly used for the invoice address.
      *
-     * @param CustomerAddress $value
+     * @param AddressInterface $value
      */
-    public function setOfficeAddress(CustomerAddress $value);
+    public function setOfficeAddress(AddressInterface $value);
 
     /**
      * Get current used office addresse of the customers headquater.
@@ -190,49 +110,23 @@ interface CustomerInterface
 	/**
      * Set the delivery address of the customer.
      *
-     * @param CustomerAddress $value
+     * @param AddressInterface $value
      */
-    public function setDeliveryAddress(CustomerAddress $value);
+    public function setDeliveryAddress(AddressInterface $value);
 
     /**
      * Get current used delivery addresse of the customers where to send products or something else...
      *
-     * @return CustomerAddress 
+     * @return AddressInterface 
      */
     public function getDeliveryAddress();
 	
-    /**
-     * Add contacts
-     *
-     * @param ContactInterface $contact
-     * @return Customer
-     */
-    public function addContact(ContactInterface $contact);
-
-    /**
-     * Remove single contact
-     *
-     * @param ContactInterface $contacts
-     */
-    public function removeContact(ContactInterface $contact);
-
-    /**
-     * Get collection of all assigned contacts of the customer
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getContacts();
-    
-	/**
-	 * Assing a collaction of contacts to the customer
-	 */
-    public function setContacts(Collection $contacts);
 	
     /**
      * Set salutation_modus
      *
      * @param boolean $salutationModus
-     * @return Customer
+     * @return CustomerInterface
      */
     public function setSalutationModus($salutationModus);
 
@@ -247,9 +141,9 @@ interface CustomerInterface
      * Set the type of a customer. Private persone, company, authority ...
      *
      * @param string $customerType
-     * @return Customer
+     * @return CustomerInterface
      */
-    public function setCustomerType($customerType);
+    public function setCustomerType(CustomerTypeInterface $customerType);
 
     /**
      * Get customer_type
@@ -257,4 +151,8 @@ interface CustomerInterface
      * @return string $customer_type Current assigned customer type: Company|Private|...
      */
     public function getCustomerType();
+    
+    public function getCustomerHasContacts();
+	public function setCustomerHasContacts($value);
+	public function addCustomerHasContacts(CustomerHasContactsInterface $object);
 }

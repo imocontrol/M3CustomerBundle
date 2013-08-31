@@ -1,5 +1,13 @@
    
 services:
+    imocontrol.customer_type:
+      class: %imocontrol.customer_type.admin.class%
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_type_title, persist_filters: true, show_in_dashboard: true }
+      arguments: [null, %imocontrol.customer_type.admin.entity.class%, %imocontrol.customer_type.admin.controller.class%]
+      calls:
+        - [setSecurityContext, [@security.context]]
+        
     imocontrol.customer:
       class: %imocontrol.customer.admin.class%
       tags:
@@ -11,15 +19,23 @@ services:
     imocontrol.customer_address:
       class: %imocontrol.customer_address.admin.class%
       tags:
-        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_address_title, persist_filters: true }
-      arguments: [null, %imocontrol.customer_address.admin.entity.class%, %imocontrol.customer.admin.controller.class%]
+        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_address_title, persist_filters: true, , show_in_dashboard: false }
+      arguments: [null, %imocontrol.customer_address.admin.entity.class%, %imocontrol.customer_address.admin.controller.class%]
       calls:
         - [setSecurityContext, [@security.context]]
         
     imocontrol.contact:
       class: %imocontrol.contact.admin.class%
       tags:
-        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_contact_title, persist_filters: true }
-      arguments: [null, %imocontrol.contact.admin.entity.class%, %imocontrol.customer.admin.controller.class%]
+        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_contact_title, persist_filters: true, , show_in_dashboard: false }
+      arguments: [null, %imocontrol.contact.admin.entity.class%, %imocontrol.contact.admin.controller.class%]
+      calls:
+        - [setSecurityContext, [@security.context]]
+        
+    imocontrol.customer_has_contacts:
+      class: %imocontrol.customer_has_contacts.admin.class%
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: Customers, label: customer_customer_has_contacts_title, persist_filters: true, , show_in_dashboard: false }
+      arguments: [null, %imocontrol.customer_has_contacts.admin.entity.class%, %imocontrol.customer_has_contacts.admin.controller.class%]
       calls:
         - [setSecurityContext, [@security.context]]

@@ -6,13 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerInterface;	
+use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerInterface;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerTypeInterface;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerHasContactsInterface;
 use IMOControl\M3\CustomerBundle\Model\Interfaces\ContactInterface;
-use IMOControl\M3\CustomerBundle\Model\CustomerAddress;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
 
-/**
- * ORM\MappedSuperclass()
- */
 abstract class Customer implements CustomerInterface
 {
 	
@@ -20,75 +19,20 @@ abstract class Customer implements CustomerInterface
 	const TYPE_COMPANY = 1;
 	const TYPE_AUTHORITY = 2;
 	
-	
 	/**
-     * @var string $customer_type
-     * @ORM\Column(name="customer_type", type="string", length=40, nullable=true)
+     * @var CustomerTypeInterface $customer_type
      */
     protected $customer_type;
 	
     /**
-     * @var string $academic_title
+     * Get the customers name or company name. This is the first line for the postal address 
+     * or for __toString method.
      *
-     * @ORM\Column(name="academic_title", type="string", length=40, nullable=true)
-     */
-    protected $academic_title;
-
-    /**
-     * @var string $firstname
+     * @var string $name
      * 
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="firstname", type="string", length=60, nullable=true)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      */
-    protected $firstname;
-    
-    /**
-     * @var string $lastname
-     * 
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="lastname", type="string", length=60)
-     */
-    protected $lastname;
-
-    /**
-     * @var string $email
-     *
-     * @Assert\Email(message="Die eingegebenen Emailadresse ist nicht gültig!")
-     * 
-     * @ORM\Column(name="email", type="string", length=100, nullable=true)
-     */
-    protected $email;
-
-
-    /**
-     * @var string $gender
-     *
-     * @ORM\Column(name="gender", type="string", length=10)
-     */
-    protected $gender;
-    
-    /**
-     * @var string $company
-     * 
-     * @ORM\Column(name="company", type="string", length=100, nullable=true)
-     */
-    protected $company;
-    
-    /**
-     * @var string $phone
-     * 
-     * @ORM\Column(name="phone", type="string", length=30, nullable=true)
-     */
-    protected $phone;
-    
-    /**
-     * @var string $company
-     * 
-     * @ORM\Column(name="phone_mobile", type="string", length=30, nullable=true)
-     */
-    protected $phone_mobile;
+    protected $name;
     
     /**
      * @var string $uid_number
@@ -99,18 +43,12 @@ abstract class Customer implements CustomerInterface
     
   
     /**
-     * //@ORM\ManyToOne(targetEntity="CustomerAddress")
-     * //@ORM\JoinColumn(name="office_address", referencedColumnName="id")
-     *
      * @var CustomerAddress $office_address
      */
     protected $office_address;
 	
 	/**
-     * //@ORM\ManyToOne(targetEntity="CustomerAddress")
-     * //@ORM\JoinColumn(name="address", referencedColumnName="id")
-     *
-     * @var Address $delivery_address
+     * @var CustomerAddress $delivery_address
      */
     protected $delivery_address;
     
@@ -132,10 +70,9 @@ abstract class Customer implements CustomerInterface
     
     
     /**
-     * //@ORM\OneToMany(targetEntity="Contact", mappedBy="customer", cascade={"persist", "remove"}, orphanRemoval=true)
-	 * )
+     * //old: OneToMany(targetEntity="Contact", mappedBy="customer", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    protected $contacts;
+    protected $customer_has_contacts;
     
     /**
      * @var boolean $salutation_modus
@@ -159,16 +96,12 @@ abstract class Customer implements CustomerInterface
     }
     
     public function __toString() {
-        
-        if (!empty($this->company)) {
-            return  sprintf("%s %s - %s", $this->getCustomerType(), $this->getCompany(), $this->getAddress()->getCity());
-        } 
-        return $this->getFullName() . " - " . $this->getAddress()->getCity();
+        return  sprintf("%s %s", $this->getCustomerType(), $this->getName());
     }
     
     public function __construct()
     {
-        $this->contacts = new ArrayCollection();
+        
     }
 
     
@@ -203,7 +136,8 @@ abstract class Customer implements CustomerInterface
     }
     
     public function getFullName($nl='') {
-        return sprintf("%s$nl %s %s %s", $this->getGender(), $this->getAcademicTitle(), $this->getFirstname(), $this->getLastname());
+//         return sprintf("%s$nl %s %s %s", $this->getGender(), $this->getAcademicTitle(), $this->getFirstname(), $this->getLastname());
+    	return $this->name;
     }
 	
 	public function getPostalSalutation($short=false) {
@@ -232,139 +166,7 @@ abstract class Customer implements CustomerInterface
     // End  Helpers
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-    
-    /**
-     * Set academic_title
-     *
-     * @param string $academicTitle
-     */
-    public function setAcademicTitle($academicTitle)
-    {
-        $this->academic_title = $academicTitle;
-    }
-
-    /**
-     * Get academic_title
-     *
-     * @return string 
-     */
-    public function getAcademicTitle()
-    {
-        return $this->academic_title;
-    }
-
-    /**
-     * Set firstname
-     *
-     * @param string $firstname
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-    }
-
-    /**
-     * Get firstname
-     *
-     * @return string 
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    /**
-     * Set lastname
-     *
-     * @param string $lastname
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-    }
-
-    /**
-     * Get lastname
-     *
-     * @return string 
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set birthday
-     *
-     * @param date $birthday
-     */
-    public function setBirthday($birthday)
-    {
-        $this->birthday = $birthday;
-    }
-
-    /**
-     * Get birthday
-     *
-     * @return date 
-     */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
-
-    /**
-     * Set gender
-     *
-     * @param string $gender
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-    }
-
-    /**
-     * Get gender
-     *
-     * @return string 
-     */
-    public function getGender()
-    {
-        return ($this->gender == 'Mann') ? 'Herr' : $this->gender;
-    }
-
-    /**
-     * Set uid_number
-     *
-     * @param string $uidNumber
+     * {@inheritdoc}
      */
     public function setUidNumber($uidNumber)
     {
@@ -372,9 +174,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get uid_number
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getUidNumber()
     {
@@ -383,9 +183,7 @@ abstract class Customer implements CustomerInterface
 
     
     /**
-     * Set created_at
-     *
-     * @param datetime $createdAt
+     * {@inheritdoc}
      */
     public function setCreatedAt($createdAt)
     {
@@ -393,9 +191,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get created_at
-     *
-     * @return datetime 
+     * {@inheritdoc}
      */
     public function getCreatedAt()
     {
@@ -403,9 +199,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Set updated_at
-     *
-     * @param datetime $updatedAt
+     * {@inheritdoc}
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -413,9 +207,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get updated_at
-     *
-     * @return datetime 
+     * {@inheritdoc}
      */
     public function getUpdatedAt()
     {
@@ -423,9 +215,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Set updated_from
-     *
-     * @param BaseUser $updatedFrom
+     * {@inheritdoc}
      */
     public function setUpdatedFrom($updatedFrom)
     {
@@ -433,9 +223,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get updated_from
-     *
-     * @return BaseUser 
+     * {@inheritdoc}
      */
     public function getUpdatedFrom()
     {
@@ -443,39 +231,33 @@ abstract class Customer implements CustomerInterface
     }
     
     /**
-     * Set Company
-     *
-     * @param Company $value
+     * {@inheritdoc}
      */
-    public function setCompanyName($value)
+    public function setName($value)
     {
-        $this->company = $value;
+        $this->name = $value;
+        return $this;
     }
 
     /**
-     * Get Company
-     *
-     * @return Company 
+     * {@inheritdoc} 
      */
-    public function getCompanyName()
+    public function getName()
     {
-        return $this->company;
+        return $this->name;
     }
     
     /**
-     * Set Address
-     *
-     * @param Address $value
+     * {@inheritdoc}
      */
-    public function setOfficeAddress(CustomerAddress $value)
+    public function setOfficeAddress(AddressInterface $value)
     {
         $this->office_address = $value;
+        return $this;
     }
 
     /**
-     * Get Address
-     *
-     * @return Address 
+     * {@inheritdoc}
      */
     public function getOfficeAddress()
     {
@@ -483,73 +265,24 @@ abstract class Customer implements CustomerInterface
     }
 	
 	/**
-     * Set Address
-     *
-     * @param Address $value
-     */
-    public function setDeliveryAddress(CustomerAddress $value)
-    {
-        $this->delivery_address = $value;
-    }
-
-    /**
-     * Get Address
-     *
-     * @return Address 
-     */
-    public function getDeliveryAddress()
-    {
-        return $this->delivery_address;
-    }
-    
-    /**
      * {@inheritdoc}
      */
-    public function addContact(ContactInterface $contact)
+    public function setDeliveryAddress(AddressInterface $value)
     {
-        $this->contacts[] = $contacts;
-        
+        $this->delivery_address = $value;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeContact(ContactInterface $contact)
+    public function getDeliveryAddress()
     {
-        $this->contacts->removeElement($contacts);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContacts()
-    {
-        return $this->contacts;
+        return $this->delivery_address;
     }
     
-	
-    public function setContacts(Collection $contacts)
-    {
-        die('calling ' . __METHOD__);
-        foreach ($this->contacts as $contact) {
-            if ($contact->contains($contact)) {
-                $contact->removeElement($contact);
-            } else {
-                $this->removeContact($contact);
-            }
-        }
-
-        foreach ($contact as $contact) {
-            $this->addContact($contact);
-        }
-    }
-
-    /**
-     * Set salutation_modus
-     *
-     * @param boolean $salutationModus
-     * @return Customer
+	/**
+     * {@inheritdoc}
      */
     public function setSalutationModus($salutationModus)
     {
@@ -559,9 +292,7 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get salutation_modus
-     *
-     * @return boolean 
+     * {@inheritdoc} 
      */
     public function getSalutationModus()
     {
@@ -569,58 +300,9 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Customer
+     * {@inheritdoc}
      */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string 
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set phone_mobile
-     *
-     * @param string $phoneMobile
-     * @return Customer
-     */
-    public function setPhoneMobile($phoneMobile)
-    {
-        $this->phone_mobile = $phoneMobile;
-    
-        return $this;
-    }
-
-    /**
-     * Get phone_mobile
-     *
-     * @return string 
-     */
-    public function getPhoneMobile()
-    {
-        return $this->phone_mobile;
-    }
-
-    /**
-     * Set customer_type
-     *
-     * @param string $customerType
-     * @return Customer
-     */
-    public function setCustomerType($customerType)
+    public function setCustomerType(CustomerTypeInterface $customerType)
     {
         $this->customer_type = $customerType;
     
@@ -628,12 +310,36 @@ abstract class Customer implements CustomerInterface
     }
 
     /**
-     * Get customer_type
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getCustomerType()
     {
         return $this->customer_type;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomerHasContacts() 
+    {
+    	return $this->customer_has_contacts;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomerHasContacts($value)
+    {
+    	$this->customer_has_contacts = $value;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function addCustomerHasContacts(CustomerHasContactsInterface $customerHasContact)
+    {
+        $customerHasContact->setCustomer($this);
+
+        $this->customer_has_contacts[] = $customerHasContact;
     }
 }

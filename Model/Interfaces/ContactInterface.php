@@ -4,7 +4,7 @@ namespace IMOControl\M3\CustomerBundle\Model\Interfaces;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use IMOControl\M3\CustomerBundle\Model\CustomerAddress;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
 
 /**
  * ContactInterface
@@ -12,7 +12,13 @@ use IMOControl\M3\CustomerBundle\Model\CustomerAddress;
  */
 interface ContactInterface
 {
-       
+    /**
+	 * Return the contact as string.
+	 * Required function to use in admin classes.
+	 * @return string
+	 */
+	public function __toString();   
+    
     public function getFullName($nl='');
 		
 	public function getPostalSalutation($nl='');
@@ -120,14 +126,29 @@ interface ContactInterface
      * @return string 
      */
     public function getEmail();
+    
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Contact
+     */
+    public function setGender($gender);
+
+    /**
+     * Get gender
+     *
+     * @return string 
+     */
+    public function getGender();
 
     /**
      * Set address
      *
-     * @param CustomerAddress $address
+     * @param CustomerAddressInterface $address
      * @return Contact
      */
-    public function setAddress(CustomerAddress $address);
+    public function setAddress(AddressInterface $address);
 
     /**
      * Get address
@@ -139,15 +160,15 @@ interface ContactInterface
     /**
      * Set customer
      *
-     * @param \IMOControl\M3\CustomerBundle\Model\CustomerInterface $customer
+     * @param $customer_contacts
      * @return Contact
      */
-    public function setCustomer(CustomerInterface $customer = null);
+    public function setCustomerHasContacts($customer_contacts);
 
     /**
-     * Get customer
+     * Get customer has contacts
      *
-     * @return \IMOControl\M3\CustomerBundle\Model\Customer 
+     * @return $customer_has_contacts
      */
-    public function getCustomer();
+    public function getCustomerHasContacts();
 }

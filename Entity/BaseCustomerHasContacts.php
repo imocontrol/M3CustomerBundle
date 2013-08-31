@@ -1,5 +1,4 @@
 <?php
-
 namespace IMOControl\M3\CustomerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,13 +7,13 @@ use Doctrine\Common\Collections\Collection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use IMOControl\M3\CustomerBundle\Model\Customer as AbstractCustomer;
+use IMOControl\M3\CustomerBundle\Model\CustomerHasContacts as AbstractCustomerHasContacts;
 
 /**
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  */
-class BaseCustomer extends AbstractCustomer
+class BaseCustomerHasContacts extends AbstractCustomerHasContacts
 {
     /**
      * @ORM\PrePersist()
@@ -29,10 +28,4 @@ class BaseCustomer extends AbstractCustomer
     public function preUpdate() {
         $this->update_at = new \DateTime();
     }
-    
-    
-    public function __construct()
-    {
-    }
-	
 }

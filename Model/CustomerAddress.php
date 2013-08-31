@@ -1,9 +1,10 @@
 <?php
 namespace IMOControl\M3\CustomerBundle\Model;
 
+use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-abstract class CustomerAddress
+abstract class CustomerAddress implements AddressInterface
 {
 
     /**
@@ -34,6 +35,9 @@ abstract class CustomerAddress
      */
     protected $country;
 	
+	/**
+     * {@inheritdoc}
+     */
 	public function __toString() {
         return sprintf("%s, %s-%s", $this->getStreet(), $this->getPostalcode(), $this->getCity());
     }
@@ -51,32 +55,16 @@ abstract class CustomerAddress
     }
      
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set street
-     *
-     * @param string $street
-     * @return Address
+     * {@inheritdoc}
      */
     public function setStreet($street)
     {
         $this->street = $street;
-    
         return $this;
     }
 
     /**
-     * Get street
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getStreet()
     {
@@ -84,22 +72,16 @@ abstract class CustomerAddress
     }
 
     /**
-     * Set postalcode
-     *
-     * @param integer $postalcode
-     * @return Address
+     * {@inheritdoc}
      */
     public function setPostalcode($postalcode)
     {
         $this->postalcode = $postalcode;
-    
         return $this;
     }
 
     /**
-     * Get postalcode
-     *
-     * @return integer 
+     * {@inheritdoc}
      */
     public function getPostalcode()
     {
@@ -107,22 +89,16 @@ abstract class CustomerAddress
     }
 
     /**
-     * Set city
-     *
-     * @param string $city
-     * @return Address
+     * {@inheritdoc}
      */
     public function setCity($city)
     {
         $this->city = $city;
-    
         return $this;
     }
 
     /**
-     * Get city
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getCity()
     {
@@ -130,22 +106,16 @@ abstract class CustomerAddress
     }
 
     /**
-     * Set country
-     *
-     * @param string $country
-     * @return Address
+     * {@inheritdoc}
      */
     public function setCountry($country)
     {
         $this->country = $country;
-    
         return $this;
     }
 
     /**
-     * Get country
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getCountry()
     {

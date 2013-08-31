@@ -32,6 +32,12 @@ class IMOControlM3CustomerExtension extends Extension
     
     protected function initApplicationConfig($config, $container) 
 	{
+		$container->setParameter('imocontrol.customer_type.admin.class', $config['admin']['customer_type']['class']);
+		$container->setParameter('imocontrol.customer_type.admin.entity.class', $config['admin']['customer_type']['entity']);
+		$container->setParameter('imocontrol.customer_type.admin.controller.class', $config['admin']['customer_type']['controller']);
+		$container->setParameter('imocontrol.customer_type.admin.translation', $config['admin']['customer_type']['translation']);
+		
+		
 		$container->setParameter('imocontrol.customer.admin.class', $config['admin']['customer']['class']);
 		$container->setParameter('imocontrol.customer.admin.entity.class', $config['admin']['customer']['entity']);
 		$container->setParameter('imocontrol.customer.admin.controller.class', $config['admin']['customer']['controller']);
@@ -47,6 +53,11 @@ class IMOControlM3CustomerExtension extends Extension
 		$container->setParameter('imocontrol.contact.admin.controller.class', $config['admin']['contact']['controller']);
 		$container->setParameter('imocontrol.contact.admin.translation', $config['admin']['contact']['translation']);
 		
+		$container->setParameter('imocontrol.customer_has_contacts.admin.class', $config['admin']['customer_has_contacts']['class']);
+		$container->setParameter('imocontrol.customer_has_contacts.admin.entity.class', $config['admin']['customer_has_contacts']['entity']);
+		$container->setParameter('imocontrol.customer_has_contacts.admin.controller.class', $config['admin']['customer_has_contacts']['controller']);
+		$container->setParameter('imocontrol.customer_has_contacts.admin.translation', $config['admin']['customer_has_contacts']['translation']);
+		
 	}
     
     protected function registerDoctrineMappings($config)
@@ -54,66 +65,122 @@ class IMOControlM3CustomerExtension extends Extension
 	
 		//echo "<pre>" . print_r($config, true) . "</pre>";
 		//die();
-		foreach ($config['class'] as $type => $class) {
-            if (!class_exists($class)) {
-                return;
-            }
-        }
+		
 
         $collector = DoctrineCollector::getInstance();
 
-        $collector->addAssociation($config['class']['customer'], 'mapManyToOne', array(
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapManyToOne', array(
             'fieldName'     => 'office_address',
-            'targetEntity'  => $config['class']['customer_address'],
+            'targetEntity'  => $config['admin']['customer_address']['entity'],
             'cascade'       => array(
                 'all',
             ),
             'mappedBy'      => null,
             'inversedBy'    => null,
-            'joinColumns'   => array(
-                array(
-                    'name'  => 'proj',
-                    'referencedColumnName' => 'id',
-                    'onDelete' => 'CASCADE',
-                ),
-            ),
-            'orphanRemoval' => true,
         ));
         
-        $collector->addAssociation($config['class']['customer'], 'mapManyToOne', array(
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapManyToOne', array(
             'fieldName'     => 'delivery_address',
-            'targetEntity'  => $config['class']['customer_address'],
+            'targetEntity'  => $config['admin']['customer_address']['entity'],
             'cascade'       => array(
                 'all',
             ),
             'mappedBy'      => null,
             'inversedBy'    => null,
-            'joinColumns'   => array(
-                array(
-                    'name'  => 'proj',
-                    'referencedColumnName' => 'id',
-                    'onDelete' => 'CASCADE',
-                ),
-            ),
-            'orphanRemoval' => true,
         ));
         
-        $collector->addAssociation($config['class']['contact'], 'mapManyToOne', array(
-            'fieldName'     => 'address',
-            'targetEntity'  => $config['class']['customer_address'],
+		// Adding Contact's mapping
+        $collector->addAssociation($config['admin']['contact']['entity'], 'mapOneToMany', array(
+            'fieldName'     => 'customer_has_contacts',
+            'targetEntity'  => $config['admin']['customer_has_contacts']['entity'],
             'cascade'       => array(
-                'all',
+                'persist',
             ),
-            'mappedBy'      => null,
-            'inversedBy'    => null,
-            'joinColumns'   => array(
+            'mappedBy'      => 'contact',
+            'orphanRemoval' => false,
+        ));
+        
+        $collector->addAssociation($config['admin']['customer_has_contacts']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'customer',
+            'targetEntity'  => $config['admin']['customer']['entity'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => NULL,
+            'inversedBy'    => 'customer_has_contacts',
+            'joinColumns'   =>  array(
                 array(
-                    'name'  => 'proj',
+                    'name'  => 'customer_id',
                     'referencedColumnName' => 'id',
-                    'onDelete' => 'CASCADE',
                 ),
             ),
+            'orphanRemoval' => false,
+        ));
+
+        $collector->addAssociation($config['admin']['customer_has_contacts']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'contact',
+            'targetEntity'  => $config['admin']['contact']['entity'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => NULL,
+            'inversedBy'    => 'customer_has_contacts',
+            'joinColumns'   =>  array(
+                array(
+                    'name'  => 'contact_id',
+                    'referencedColumnName' => 'id',
+                ),
+            ),
+            'orphanRemoval' => false,
+        ));
+
+        
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapOneToMany', array(
+            'fieldName'     => 'customer_has_contacts',
+            'targetEntity'  => $config['admin']['customer_has_contacts']['entity'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => 'customer',
             'orphanRemoval' => true,
+            'orderBy'       => array(
+                'position'  => 'ASC',
+            ),
+        ));
+        
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'customer_type',
+            'targetEntity'  => $config['admin']['customer_type']['entity'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => NULL,
+            'inversedBy'    => NULL,
+            'joinColumns'   =>  array(
+                array(
+                    'name'  => 'customer_id',
+                    'referencedColumnName' => 'id',
+                ),
+            ),
+            'orphanRemoval' => false,
+        ));
+        
+        // Add Contact mappings
+        $collector->addAssociation($config['admin']['contact']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'address',
+            'targetEntity'  => $config['admin']['customer_address']['entity'],
+            'cascade'       => array(
+                'persist',
+            ),
+            'mappedBy'      => NULL,
+            'inversedBy'    => NULL,
+            'joinColumns'   =>  array(
+                array(
+                    'name'  => 'contact_id',
+                    'referencedColumnName' => 'id',
+                ),
+            ),
+            'orphanRemoval' => false,
         ));
 	}
 }

@@ -7,12 +7,94 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerInterface;
 use IMOControl\M3\CustomerBundle\Model\Interfaces\ContactInterface;
-use IMOControl\M3\CustomerBundle\Model\CustomerAddress;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
 
 
 abstract class Contact implements ContactInterface
 {
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="position", type="string", length=100, nullable=true)
+     */
+    protected $position;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="string", length=20)
+     */
+    protected $gender;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salutation", type="string", length=30)
+     */
+    protected $salutation;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstname", type="string", length=100)
+     */
+    protected $firstname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastname", type="string", length=100)
+     */
+    protected $lastname;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=40, nullable=true)
+     */
+    protected $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone_mobile", type="string", length=40, nullable=true)
+     */
+    protected $phone_mobile;
+
+    /**
+     * @var string
+     *
+     * @Assert\Email()
+     * 
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    protected $email;
+
+    /**
+     * 
+     * @var CustomerAddress $address
+     */
+    protected $address;
+    
+    /**
+     * 
+     */
+    protected $customer_has_contacts;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    protected $created_at;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    protected $updated_at;
+    
     public function __toString() {
         return sprintf("[%s]-%s %s %s", $this->getPosition(), $this->getSalutation(), $this->getFirstname(), $this->getLastname());
     }
@@ -31,9 +113,9 @@ abstract class Contact implements ContactInterface
 			case 'Firma':
 			case 'Gemeinde':
 				if ($this->getCustomer()->getSalutationModus()) {
-					$salutation = sprintf("%s %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getCompany());
+					$salutation = sprintf("%s %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getName());
 				} else {
-					$salutation = sprintf("%s %s$nl z.H. %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getCompany(), $this->getFullName());
+					$salutation = sprintf("%s %s$nl z.H. %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getName(), $this->getFullName());
 				}
 				break;
 			case 'Privat':
@@ -41,9 +123,9 @@ abstract class Contact implements ContactInterface
 				break;
 			default:
 				if ($this->getCustomer()->getSalutationModus()) {
-					$salutation = sprintf("%s %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getCompany());
+					$salutation = sprintf("%s %s", $this->getCustomer()->getCustomerType(), $this->getCustomer()->getName());
 				} else {
-					$salutation = sprintf("%s$nl z.H. %s", $this->getCustomer()->getCompany(), $this->getFullName());
+					$salutation = sprintf("%s$nl z.H. %s", $this->getCustomer()->getName(), $this->getFullName());
 				}
 				break;	
 		}
@@ -52,15 +134,6 @@ abstract class Contact implements ContactInterface
     }
 	
     
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set position
@@ -71,7 +144,6 @@ abstract class Contact implements ContactInterface
     public function setPosition($position)
     {
         $this->position = $position;
-    
         return $this;
     }
 
@@ -94,7 +166,6 @@ abstract class Contact implements ContactInterface
     public function setSalutation($salutation)
     {
         $this->salutation = $salutation;
-    
         return $this;
     }
 
@@ -117,7 +188,6 @@ abstract class Contact implements ContactInterface
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
         return $this;
     }
 
@@ -140,7 +210,6 @@ abstract class Contact implements ContactInterface
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
         return $this;
     }
 
@@ -155,6 +224,26 @@ abstract class Contact implements ContactInterface
     }
 
     /**
+     * Set email
+     *
+     * @param string $email
+     * @return Contact
+     */
+    public function setGender($gender)
+    {
+    	$this->gender = $gender;
+    	return $this;
+    }
+    
+
+    /**
+     */
+    public function getGender()
+    {
+    	return $this->gender;
+    }
+    
+    /**
      * Set phone
      *
      * @param string $phone
@@ -162,8 +251,7 @@ abstract class Contact implements ContactInterface
      */
     public function setPhone($phone)
     {
-        $this->phone = $phone1;
-    
+        $this->phone = $phone;
         return $this;
     }
 
@@ -186,7 +274,6 @@ abstract class Contact implements ContactInterface
     public function setPhoneMobile($phone)
     {
         $this->phone_mobile = $phone;
-    
         return $this;
     }
 
@@ -209,7 +296,6 @@ abstract class Contact implements ContactInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    
         return $this;
     }
 
@@ -226,13 +312,12 @@ abstract class Contact implements ContactInterface
     /**
      * Set address
      *
-     * @param \stdClass $address
+     * @param CustomerAddressInterface $address
      * @return Contact
      */
-    public function setAddress(CustomerAddress $address)
+    public function setAddress(AddressInterface $address)
     {
         $this->address = $address;
-    
         return $this;
     }
 
@@ -255,7 +340,6 @@ abstract class Contact implements ContactInterface
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
         return $this;
     }
 
@@ -278,7 +362,6 @@ abstract class Contact implements ContactInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
         return $this;
     }
 
@@ -295,13 +378,12 @@ abstract class Contact implements ContactInterface
     /**
      * Set customer
      *
-     * @param Customer $customer
+     * @param CustomerHasContacts $customer_contacts
      * @return Contact
      */
-    public function setCustomer(CustomerInterface $customer = null)
+    public function setCustomerHasContacts($customer_contacts)
     {
-        $this->customer = $customer;
-    
+        $this->customer_has_contacts = $customer_contacts;
         return $this;
     }
 
@@ -310,8 +392,8 @@ abstract class Contact implements ContactInterface
      *
      * @return Customer 
      */
-    public function getCustomer()
+    public function getCustomerHasContacts()
     {
-        return $this->customer;
+        return $this->customer_has_contacts;
     }
 }
