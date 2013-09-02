@@ -1,5 +1,0 @@
-parameters:
-    imocontrol.customer.admin.class: IMOControl\M3\CustomerBundle\Admin\CustomerAdmin
-    imocontrol.customer.admin.entity.class: IMOControlM3CustomerBundle:Customer
-    imocontrol.customer.admin.controller.class: IMOControlM3CustomerBundle:Customer
-    

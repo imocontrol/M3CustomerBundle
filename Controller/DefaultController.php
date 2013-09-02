@@ -5,5 +5,4 @@ use IMOControl\M3\AdminBundle\Controller\CoreAdminController as Controller;
 
 class DefaultController extends Controller
 {
-
 }

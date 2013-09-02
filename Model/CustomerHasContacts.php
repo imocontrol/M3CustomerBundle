@@ -57,7 +57,7 @@ abstract class CustomerHasContacts implements CustomerHasContactsInterface
     	if (is_object($this->contact)) {
     		return sprintf("#%s-[%s] %s", $this->position, $this->contact->getPosition(), $this->contact->getFullName());
     	}
-    	return 'Create Customer contact';    		
+    	return 'Create Customer contact';	
     }
     
    

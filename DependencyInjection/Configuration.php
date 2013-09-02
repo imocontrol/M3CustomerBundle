@@ -22,6 +22,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
 			->children()
 				->scalarNode('customer_folder_root_dir')->defaultValue("%kernel.root_dir%/data/customers/")->end()
+				->scalarNode('customer_folder_format')->defaultValue("#Id#_#InternalName#_#OfficeAddress.City#")->end()
+				->scalarNode('customer_folder_min_id_length')->defaultValue("false")->end()
             	->arrayNode('class')
             		->addDefaultsIfNotSet()
                     ->children()
@@ -50,6 +52,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('entity')->cannotBeEmpty()->defaultValue('IMOControl\M3\CustomerBundle\Entity\BaseCustomer')->end()
                                 ->scalarNode('controller')->cannotBeEmpty()->defaultValue('IMOControlM3CustomerBundle:CRUD')->end()
                                 ->scalarNode('translation')->cannotBeEmpty()->defaultValue('default')->end()
+                                ->scalarNode('manager')->cannotBeEmpty()->defaultValue('IMOControl\M3\CustomerBundle\Services\CustomerManager')->end()
                             ->end()
                         ->end()
                     ->end()

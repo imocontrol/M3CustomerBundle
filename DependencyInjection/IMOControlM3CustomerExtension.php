@@ -32,12 +32,16 @@ class IMOControlM3CustomerExtension extends Extension
     
     protected function initApplicationConfig($config, $container) 
 	{
+		$container->setParameter('imocontrol.customer_folder_root_dir', $config['customer_folder_root_dir']);
+		$container->setParameter('imocontrol.customer_folder_format', $config['customer_folder_format']);
+		$container->setParameter('imocontrol.customer_folder_min_id_length', $config['customer_folder_min_id_length']);
+		
 		$container->setParameter('imocontrol.customer_type.admin.class', $config['admin']['customer_type']['class']);
 		$container->setParameter('imocontrol.customer_type.admin.entity.class', $config['admin']['customer_type']['entity']);
 		$container->setParameter('imocontrol.customer_type.admin.controller.class', $config['admin']['customer_type']['controller']);
 		$container->setParameter('imocontrol.customer_type.admin.translation', $config['admin']['customer_type']['translation']);
 		
-		
+		$container->setParameter('imocontrol.customer.manager.class', $config['admin']['customer']['manager']);
 		$container->setParameter('imocontrol.customer.admin.class', $config['admin']['customer']['class']);
 		$container->setParameter('imocontrol.customer.admin.entity.class', $config['admin']['customer']['entity']);
 		$container->setParameter('imocontrol.customer.admin.controller.class', $config['admin']['customer']['controller']);

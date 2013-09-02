@@ -155,4 +155,7 @@ interface CustomerInterface
     public function getCustomerHasContacts();
 	public function setCustomerHasContacts($value);
 	public function addCustomerHasContacts(CustomerHasContactsInterface $object);
+	
+	public function getInternalName();
+	public function setInternalName($value);
 }

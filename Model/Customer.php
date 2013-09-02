@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerInterface;
 use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerTypeInterface;
@@ -33,6 +34,16 @@ abstract class Customer implements CustomerInterface
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      */
     protected $name;
+    
+    /**
+     * Holds an internal name of the customer which must be unique. It's also used for
+     * the customer folder.
+     *
+     * @var string $name
+     * 
+     * @ORM\Column(name="internal_name", type="string", unique=true, length=100)
+     */
+    protected $internal_name;
     
     /**
      * @var string $uid_number
@@ -245,6 +256,23 @@ abstract class Customer implements CustomerInterface
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setInternalName($value)
+    {
+        $this->internal_name = $value;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc} 
+     */
+    public function getInternalName()
+    {
+        return $this->internal_name;
     }
     
     /**

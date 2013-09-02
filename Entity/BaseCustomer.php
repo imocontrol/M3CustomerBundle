@@ -16,6 +16,12 @@ use IMOControl\M3\CustomerBundle\Model\Customer as AbstractCustomer;
  */
 class BaseCustomer extends AbstractCustomer
 {
+	/**
+	 * Virtual form property.
+	 * @var boolean $_change_internal_name
+	 */
+	protected $_change_internal_name = false;
+
     /**
      * @ORM\PrePersist()
      */
@@ -33,6 +39,26 @@ class BaseCustomer extends AbstractCustomer
     
     public function __construct()
     {
+    }
+    
+    /**
+     * Virtual property getter if the internal name has to change.
+     *
+     * @return boolean
+     */
+    public function getChangeInternalName()
+    {
+    	return $this->_change_internal_name;
+    }
+    
+    /**
+     * Virtual property setter if the internal name has to change.
+     *
+     * @param boolean $value
+     */
+    public function setChangeInternalName($value)
+    {
+    	$this->_change_internal_name = $value;
     }
 	
 }
