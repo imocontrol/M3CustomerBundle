@@ -186,5 +186,25 @@ class IMOControlM3CustomerExtension extends Extension
             ),
             'orphanRemoval' => false,
         ));
+        
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'created_from',
+            'targetEntity'  => $config['class']['systemuser'],
+            'cascade'       => array(
+                'all',
+            ),
+            'mappedBy'      => null,
+            'inversedBy'    => null,
+        ));
+        
+        $collector->addAssociation($config['admin']['customer']['entity'], 'mapManyToOne', array(
+            'fieldName'     => 'updated_from',
+            'targetEntity'  => $config['class']['systemuser'],
+            'cascade'       => array(
+                'all',
+            ),
+            'mappedBy'      => null,
+            'inversedBy'    => null,
+        ));
 	}
 }

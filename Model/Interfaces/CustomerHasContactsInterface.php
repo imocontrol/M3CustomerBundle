@@ -20,5 +20,7 @@ interface CustomerHasContactsInterface
 	public function setPosition($value);
 	public function isEnabled();
 	public function setEnabled($value);
+	public function isMain();
+	public function setMain($value);
     
 }

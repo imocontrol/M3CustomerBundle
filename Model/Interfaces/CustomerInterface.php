@@ -29,6 +29,15 @@ interface CustomerInterface
 	public function getPhoneNumbers();
 	
 	public function getContactsCount();
+	
+	/**
+	 * Iterate throw the contacts and find out the contact with the main flag.
+	 * Otherwise if no main contact flag is set the contact on the first position
+	 * will be selected.
+	 *
+	 * @return IMOControl\M3\CustomerBundle\Interfaces\ContactInterface|null
+	 */
+	public function getMainContact();
     
     /**
      * Set uid_number
@@ -71,7 +80,35 @@ interface CustomerInterface
      * @return datetime 
      */
     public function getUpdatedAt();
-	
+    
+    /**
+     * Set created_from
+     *
+     * @param datetime $created_from
+     */
+    public function setCreatedFrom($created_from);
+
+    /**
+     * Get created_from
+     *
+     * @return \IMOControl\M3\UserBundle\Model\Interfaces\SystemUserInterface 
+     */
+    public function getCreatedFrom();
+    
+    /**
+     * Set updated_from
+     *
+     * @param datetime $updated_from
+     */
+    public function setUpdatedFrom($updated_from);
+
+    /**
+     * Get updated_from
+     *
+     * @return \IMOControl\M3\UserBundle\Model\Interfaces\SystemUserInterface 
+     */
+    public function getUpdatedFrom();
+    
 	/**
 	 * Helper for to check if current customer is a company.
 	 * 
@@ -120,7 +157,6 @@ interface CustomerInterface
      * @return AddressInterface 
      */
     public function getDeliveryAddress();
-	
 	
     /**
      * Set salutation_modus

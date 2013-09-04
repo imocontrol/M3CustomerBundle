@@ -26,10 +26,12 @@ class CustomerAddressAdmin extends CoreAdmin
     protected function configureShowField(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('fullName')
-            ->add('postalcode', 'number')
-            ->add('city')
-            ->add('country')
+            ->with('tab.general')
+				->add('street')
+	            ->add('postalcode', 'number')
+	            ->add('city')
+	            ->add('country')
+			->end()
         ;
     }
 
@@ -43,7 +45,7 @@ class CustomerAddressAdmin extends CoreAdmin
     	//$ageQuery =  $this->modelManager->getEntityManager('M3AppScorezettelBundle:AgeGroup')->createQuery('SELECT a FROM M3AppScorezettelBundle:AgeGroup a WHERE a.enabled = true ORDER BY a.name ASC');
         
         $formMapper
-            ->with('General')
+            ->with('tab.general')
                 ->add('street')
                 ->add('postalcode', 'number')
                 ->add('city')
@@ -67,9 +69,9 @@ class CustomerAddressAdmin extends CoreAdmin
             ->add('country')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'view' => array('template' => '::M3/actions/list__action_view.html.twig'),
-                    'edit' => array('template' => '::M3/actions/list__action_edit.html.twig'),
-                    'delete' => array('template' => '::M3/actions/list__action_delete.html.twig'),
+                    'view' => array(),
+                    'edit' => array(),
+                    'delete' => array(),
                 )
             ))
         ;

@@ -29,7 +29,7 @@ abstract class Contact implements ContactInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="salutation", type="string", length=30)
+     * @ORM\Column(name="salutation", type="string", length=30, nullable=true)
      */
     protected $salutation;
 
@@ -96,8 +96,25 @@ abstract class Contact implements ContactInterface
     protected $updated_at;
     
     public function __toString() {
-        return sprintf("[%s]-%s %s %s", $this->getPosition(), $this->getSalutation(), $this->getFirstname(), $this->getLastname());
+    	$flag = (!$this->getMainContact())?"":"*";
+        return sprintf("%s[%s]-%s %s %s", $flag, $this->getPosition(), $this->getSalutation(), $this->getFirstname(), $this->getLastname());
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+     public function getMainContact()
+     {
+     	$return = false;
+     	if(!is_null($this->getCustomerHasContacts())) {
+     		foreach($this->getCustomerHasContacts() as $key => $item) {
+     			if ($item->isMain()) {
+     				return $item;
+     			}
+     		}
+     	}
+     	return $return;
+     }
     
     public function __construct() {
 

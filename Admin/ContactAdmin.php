@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 
 use IMOControl\M3\AdminBundle\Admin\Admin as CoreAdmin;
+use IMOControl\M3\CustomerBundle\Model\Interfaces\ContactInterface;
 
 class ContactAdmin extends CoreAdmin
 {
@@ -55,11 +56,18 @@ class ContactAdmin extends CoreAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        
         $formMapper
             ->with('General')
 				->add('position')
-				->add('gender')
+				->add('gender', 'choice', array(
+                    'choices' => array(
+                        ContactInterface::GENDER_UNKNOWN => 'gender_unknown',
+                        ContactInterface::GENDER_FEMALE  => 'gender_female',
+                        ContactInterface::GENDER_MAN     => 'gender_male',
+                    ),
+                    'required' => true,
+                    'translation_domain' => $this->getTranslationDomain()
+                ))
                 ->add('salutation')
                 ->add('firstname')
                 ->add('lastname')

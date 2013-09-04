@@ -47,6 +47,7 @@ class CustomerHasContactsAdmin extends CoreAdmin
             ->add('contact', 'sonata_type_model_list', array('required' => false), array(
                 'link_parameters' => $link_parameters
             ))
+            ->add('main', null, array('required' => false))
             ->add('enabled', null, array('required' => false))
             ->add('position', 'hidden')
         ;
@@ -62,6 +63,7 @@ class CustomerHasContactsAdmin extends CoreAdmin
         	->addIdentifier('id')
             ->add('contact')
             ->add('customer')
+			->add('main')
             ->add('position')
             ->add('enabled')
         ;

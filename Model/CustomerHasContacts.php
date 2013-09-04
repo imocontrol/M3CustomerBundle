@@ -9,6 +9,10 @@ use IMOControl\M3\CustomerBundle\Model\Interfaces\CustomerHasContactsInterface;
 
 abstract class CustomerHasContacts implements CustomerHasContactsInterface
 {
+    protected $customer;
+    
+    protected $contact;
+	
 	/**
      * @var string
      *
@@ -19,13 +23,16 @@ abstract class CustomerHasContacts implements CustomerHasContactsInterface
     /**
      * @var boolean
      *
+     * @ORM\Column(name="main", type="boolean", nullable=true)
+     */
+    protected $main;
+    
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     protected $enabled;
-    
-    protected $customer;
-    
-    protected $contact;
     
    /**
      * @var datetime $created_at
@@ -57,7 +64,7 @@ abstract class CustomerHasContacts implements CustomerHasContactsInterface
     	if (is_object($this->contact)) {
     		return sprintf("#%s-[%s] %s", $this->position, $this->contact->getPosition(), $this->contact->getFullName());
     	}
-    	return 'Create Customer contact';	
+    	return '--';	
     }
     
    
@@ -112,6 +119,25 @@ abstract class CustomerHasContacts implements CustomerHasContactsInterface
     	$this->enabled = $value;
     	return $this;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function isMain()
+    {
+    	return $this->main;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setMain($value)
+    {
+    	$this->main = $value;
+    	return $this;
+    }
+    
+    
     
     /**
      * {@inheritdoc}

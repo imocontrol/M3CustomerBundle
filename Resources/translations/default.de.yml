@@ -1,9 +1,91 @@
+# Customer translations
 Customers: Kunden
-customer_title: Kunden
-Customer List: Kundenliste
-customer_contact_title: Kunden Ansprechpartner
-Customer Contact List: Kunden Ansprechpartner Übersicht
-customer_address_title: Kundenadressen
-Customer Address List: Kundenadressen Übersicht
+customer_title: Kundenliste
+customer_contact_title: Kunden Kontakte
+customer_address_title: Kunden Adressen
 customer_type_title: Kundenkreis
-Customer Type List: Kundenkreis Übersicht
+
+# Breadcrumb labels
+breadcrumb.link_customer_type_list: Kundenkreis
+breadcrumb.link_customer_list: Kunden
+breadcrumb.link_contact_list: Ansprechpartner
+breadcrumb.link_customer_address_list: Kundenadresse
+
+# List labels
+list.label_customer_type: Kundenkreis
+list.label_name: Name/Bezeichnung
+list.label_office_address: Rechnungsadresse
+list.label_delivery_address: Lieferadresse
+list.label_main_contact: Hauptkontakt
+list.label_enable: Aktiv?
+list.label_enabled: Aktiv?
+list.label__action: Optionen
+
+# Filter labels
+filter.label_customer_type_name: Kundenkreis
+filter.label_name: Name
+filter.label_office_address_postalcode: Büro/PLZ
+filter.label_office_address_city: Büro/Ort
+filter.label_delivery_address_postalcode: Liefer/PLZ
+filter.label_delivery_address_city: Liefer/Ort
+
+# Form labels
+form.label_name: Name
+form.label_enabled: Aktiviert
+form.label_customer_type: Kundenkreis
+form.label_internal_name: Interner Name
+form.label_change_internal_name: Neuen Kundennamen übernehmen
+form.label_customer_has_contacts: Kontakte
+form.label_contact: Ansprechperson
+form.label_office_address: Rechnungsadresse
+form.label_delivery_address: Lieferadresse
+form.label_uid_number: UID-Nummer
+form.label_salutation_modus: Anredemodus
+form.label_created_from: Erstellt von
+form.label_updated_from: Bearbeitet von
+form.label_created_at: Erstellt am 
+form.label_updated_at: Bearbeitet am
+
+# Form labels customer contacts
+form.label_position: Position
+form.label_firstname: Vorname
+form.label_lastname: Nachname
+form.label_gender: Geschlecht
+form.label_salutation: Anrede/Titel
+form.label_phone: Telefon
+form.label_phone_mobile: Mobiltelefon
+form.label_email: Email
+form.label_address: Postanschrift
+
+# Form labels address
+form.label_street: Straße
+form.label_city: Ort
+form.label_postalcode: Postleitzahl
+form.label_country: Land
+
+# Form tab labels
+tab.general: Stammdaten
+tab.customer_contacts: Ansprechpersonen
+tab.system_infos: Systeminfos
+
+# Help messages
+help_customer_change_internal_name: Aktualisiert den aktuellen internen Kundennamen. Dabei wird auch der Kundenordner im Dateisystem unbenannt. Dadurch könnten unter Umständen unerwünschte Nebeneffekte auftreten.
+
+# Show labels
+show.label_name: Name
+show.label_enabled: Aktiviert
+show.label_customer_type: Kundenkreis
+show.label_internal_name: Interner Name
+show.label_change_internal_name: Neuen Kundennamen übernehmen
+show.label_main_contact: Hauptansprechperson
+show.label_customer_has_contacts: Kontakte
+show.label_contact: Ansprechperson
+show.label_office_address: Rechnungsadresse
+show.label_delivery_address: Lieferadresse
+show.label_uid_number: UID-Nummer
+show.label_salutation_modus: Anredemodus
+show.label_created_from: Erstellt von
+show.label_updated_from: Bearbeitet von
+show.label_created_at: Erstellt am 
+show.label_updated_at: Bearbeitet am
+show.label_contacts_count: Summe

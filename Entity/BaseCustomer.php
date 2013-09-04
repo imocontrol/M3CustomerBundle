@@ -33,7 +33,7 @@ class BaseCustomer extends AbstractCustomer
      * @ORM\PreUpdate()
      */
     public function preUpdate() {
-        $this->update_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
     
     

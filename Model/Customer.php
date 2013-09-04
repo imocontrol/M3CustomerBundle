@@ -16,10 +16,6 @@ use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
 abstract class Customer implements CustomerInterface
 {
 	
-	const TYPE_PRIVATE = 0;
-	const TYPE_COMPANY = 1;
-	const TYPE_AUTHORITY = 2;
-	
 	/**
      * @var CustomerTypeInterface $customer_type
      */
@@ -79,9 +75,24 @@ abstract class Customer implements CustomerInterface
      */
     protected $updated_at;
     
+    /**
+     * Notice: doctrine mapping done manually in DI/Extension
+     *
+     * @var SystemUserInterface $created_from
+     */
+    protected $created_from;
     
     /**
-     * //old: OneToMany(targetEntity="Contact", mappedBy="customer", cascade={"persist", "remove"}, orphanRemoval=true)
+     * Notice: doctrine mapping done manually in DI/Extension
+     *
+     * @var SystemUserInterface $updated_from
+     */
+    protected $updated_from;
+    
+    /**
+     * Notice: doctrine mapping done manually in DI/Extension
+     *
+     * @var CustomerHasContacts $customer_has_contacts
      */
     protected $customer_has_contacts;
     
@@ -92,29 +103,10 @@ abstract class Customer implements CustomerInterface
      */
     protected $salutation_modus;
     
-    /**
-     * @ORM\PrePersist()
-     */
-    public function prePersist() {
-        $this->updated_at = null;
-        $this->created_at = new \DateTime();
-    }
-    /**
-     * @ORM\PreUpdate()
-     */
-    public function preUpdate() {
-        $this->update_at = new \DateTime();
-    }
     
     public function __toString() {
         return  sprintf("%s %s", $this->getCustomerType(), $this->getName());
     }
-    
-    public function __construct()
-    {
-        
-    }
-
     
     /**
      * Get salutation for the customer. Check if company or not!
@@ -147,7 +139,6 @@ abstract class Customer implements CustomerInterface
     }
     
     public function getFullName($nl='') {
-//         return sprintf("%s$nl %s %s %s", $this->getGender(), $this->getAcademicTitle(), $this->getFirstname(), $this->getLastname());
     	return $this->name;
     }
 	
@@ -239,6 +230,22 @@ abstract class Customer implements CustomerInterface
     public function getUpdatedFrom()
     {
         return $this->updated_from;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreatedFrom($createdFrom)
+    {
+        $this->created_from = $createdFrom;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreatedFrom()
+    {
+        return $this->created_from;
     }
     
     /**
@@ -353,6 +360,11 @@ abstract class Customer implements CustomerInterface
     	return $this->customer_has_contacts;
     }
     
+    public function getContacts()
+    {
+    	return $this->customer_has_contacts;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -370,4 +382,24 @@ abstract class Customer implements CustomerInterface
 
         $this->customer_has_contacts[] = $customerHasContact;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+     public function getMainContact()
+     {
+     	$return = null;
+     	if(!is_null($this->getCustomerHasContacts())) {
+     		$pos_flag = false;
+     		foreach($this->getCustomerHasContacts() as $key => $item) {
+     			if ($item->isMain()) {
+     				return $item;
+     			} elseif($item->getPosition() == 1) {
+					$pos_flag = $item;     				
+     			}
+     		}
+     		return $pos_flag;
+     	}
+     	return $return;
+     }
 }

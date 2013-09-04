@@ -12,6 +12,10 @@ use IMOControl\M3\CustomerBundle\Model\Interfaces\AddressInterface;
  */
 interface ContactInterface
 {
+    const GENDER_FEMALE  = 'f';
+    const GENDER_MAN     = 'm';
+    const GENDER_UNKNOWN = 'u';
+    
     /**
 	 * Return the contact as string.
 	 * Required function to use in admin classes.
